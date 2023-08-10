@@ -65,7 +65,8 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>Working With Netlify Functions: {apiResponse.data.function_data || `no data found`}</p>
+        <p>Working With Netlify Functions: { apiResponse.data ?
+        apiResponse.data.function_data : "404" }</p>
         <p>Secret Key: {apiResponse.data.secret_key || `no key found`}</p>
       </div>
       <p className="read-the-docs">
