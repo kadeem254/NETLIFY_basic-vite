@@ -66,8 +66,9 @@ function App() {
           count is {count}
         </button>
         <p>Working With Netlify Functions: { apiResponse.data ?
-        apiResponse.data.function_data : "404" }</p>
-        <p>Secret Key: {apiResponse.data.secret_key || `no key found`}</p>
+        apiResponse.data.function_data : "Function response not found" }</p>
+        <p>Secret Key: { apiResponse.data ?
+        apiResponse.data.secret_key : "Key not Found" }</p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
