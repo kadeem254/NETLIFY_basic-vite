@@ -3,52 +3,32 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
-async function makeFakeApiCall() {
-  const STATUS = ["SUCCESS", "FAIL"];
-
-  try {
-    let response = await fetch("/api/fakeApi");
-
-    let results = await response.json();
-
-    return {
-      status: STATUS[0],
-      data: results,
-    };
-  } catch (error) {
-    let errors = [error];
-    return {
-      status: STATUS[1],
-      errors,
-    };
-  }
-}
-
 function App() {
   const [count, setCount] = useState(0);
-  const [apiResponse, setApiResponse ] = useState(() => {
-    let _apiResponse = {}
-    
-    let returnData = makeFakeApiCall()
-      .then((val) => {
-        Object.assign(_apiResponse, val);
-        return;
-      })
-      .catch((err) => {
-        return;
-      });
-
-    console.log(_apiResponse);
-    return _apiResponse;
-  });
+  const [apiResponse, setApiResponse ] = useState({});
 
   useEffect(
     () => {
-      // console.log( 'API response changed' );
-      // console.log( apiResponse );
+      let _apiResponse = {}
+      try{
+        let request = fetch("/api/fakeApi")
+        .then(
+          response => response.json()
+        )
+        .then(
+          data => setApiResponse({data})
+        )
+        .catch(
+          err => { console.log(err) }
+        )
+      }
+      catch(err){
+        console.log( err );
+      }
     },
-    [apiResponse]
+    []
   )
+
 
   return (
     <>
@@ -65,10 +45,14 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>Working With Netlify Functions: { apiResponse.data ?
-        apiResponse.data.function_data : "Function response not found" }</p>
-        <p>Secret Key: { apiResponse.data ?
-        apiResponse.data.secret_key : "Key not Found" }</p>
+        <p>
+          Working With Netlify Functions:
+          { apiResponse.data ? " " + apiResponse.data.function_data : 'No function data' }
+        </p>
+        <p>
+          Secret Key:
+          { apiResponse.data ? " " + apiResponse.data.secret_key : 'No Secret key' }
+        </p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
